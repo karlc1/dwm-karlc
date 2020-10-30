@@ -2274,6 +2274,7 @@ centeredmaster(Monitor *m)
 	}
 }
 
+void
 focusmaster(const Arg *arg)
 {
 	Client *c;
