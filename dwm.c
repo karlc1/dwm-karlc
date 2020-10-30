@@ -420,6 +420,9 @@ buttonpress(XEvent *e)
 	XButtonPressedEvent *ev = &e->xbutton;
 
 	click = ClkRootWin;
+
+	XRaiseWindow(dpy, ev->window);
+
 	/* focus monitor if necessary */
 	if ((m = wintomon(ev->window)) && m != selmon
 	    && (focusonwheel || (ev->button != Button4 && ev->button != Button5))) {
