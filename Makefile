@@ -6,8 +6,9 @@ include config.mk
 SRC = drw.c dwm.c util.c
 OBJ = ${SRC:.c=.o}
 
-all: options dwm
+all: options dwm scripts
 
+# move all scripts to PATH for access from within config.h
 .PHONY: scripts
 scripts:
 	for file in ./scripts/*; do \
