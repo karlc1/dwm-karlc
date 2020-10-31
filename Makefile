@@ -8,6 +8,14 @@ OBJ = ${SRC:.c=.o}
 
 all: options dwm
 
+.PHONY: scripts
+scripts:
+	for file in ./scripts/*; do \
+      	echo $$file ; \
+		install -t "/usr/bin/" "$$file" ;\
+    	done
+
+
 options:
 	@echo dwm build options:
 	@echo "CFLAGS   = ${CFLAGS}"
