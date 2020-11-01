@@ -64,6 +64,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "spawn-alacritty", NULL };
 static const char *roficmd[]  = {"rofi", "-show", "drun"};
 static const char *rofiwincmd[]  = {"rofi", "-show", "window"};
+static const char *languagecmd[]  = { "toggle-kb-layout", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -83,7 +84,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_c,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
@@ -103,6 +103,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ControlMask,           XK_Return, focusmaster,    {0} },
 	{ MODKEYALT,                    XK_Tab,    spawn,          {.v = rofiwincmd } },
+	{ MODKEY,                       XK_space,  spawn,          {.v = languagecmd} },
 };
 
 /* button definitions */

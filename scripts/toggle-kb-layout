@@ -1,0 +1,5 @@
+#!/bin/bash
+
+setxkbmap -query | grep layout | awk '{print $2;}' | grep -q 'se' && setxkbmap us && exit 0
+
+setxkbmap -query | grep layout | awk '{print $2;}' | grep -q 'us' && setxkbmap se && exit 0
