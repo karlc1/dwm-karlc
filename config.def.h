@@ -27,9 +27,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor    float x,y,w,h         floatborderpx*/
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1,        50,50,500,500,        5 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1,        50,50,500,500,        5 },
+	/* class      instance    title            tags mask     isfloating   monitor    float x,y,w,h         floatborderpx*/
+	{ "Gimp",     NULL,       NULL,            0,            1,           -1,        50,50,500,500,        5 },
+	{ "Firefox",  NULL,       NULL,            1 << 8,       0,           -1,        50,50,500,500,        5 },
+	{ "Steam",    "Steam",    "Steam",         1 << 5,       1,           -1,        500,100,1000,1000,    5 },
+	{ "Steam",    "Steam",    "Friends List",  1 << 5,       1,           -1,        600,600,300,300,      5 },
 };
 
 /* layout(s) */
