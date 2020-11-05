@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -68,6 +70,10 @@ static const char *roficmd[]  = {"rofi", "-show", "drun"};
 static const char *rofiwincmd[]  = {"rofi", "-show", "window"};
 static const char *languagecmd[]  = { "toggle-kb-layout", NULL };
 
+
+static const char *increasebrightness[] = {"incbrightness", NULL};
+static const char *decreasebrightness[] = {"decbrightness", NULL};
+
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = roficmd } },
@@ -106,6 +112,9 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_Return, focusmaster,    {0} },
 	{ MODKEYALT,                    XK_Tab,    spawn,          {.v = rofiwincmd } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = languagecmd} },
+
+	{ 0,                       	  0x1008ff02,  spawn,        {.v = increasebrightness } },
+	{ 0,                            0x1008ff03,  spawn,        {.v = decreasebrightness } },
 };
 
 /* button definitions */
