@@ -1,6 +1,5 @@
-# From: https://github.com/alacritty/alacritty/issues/808
-
 #!/bin/bash
+# From: https://github.com/alacritty/alacritty/issues/808
 # Spawn a new instance of Alacritty using the CWD of the currently focused
 # Alacritty process.
 #
