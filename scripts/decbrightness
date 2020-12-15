@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo brightnessctl s 5%-
+sudo brightnessctl s 1%-
