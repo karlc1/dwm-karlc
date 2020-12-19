@@ -1,0 +1,4 @@
+- add startup script
+	- include xbindkeys for media key control, somehow manage .xbindkeysrc
+	- set wallpaper
+- setup bar
