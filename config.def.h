@@ -3,6 +3,7 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
+static const unsigned int gappx     = 5;        /* gaps between windows */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -115,6 +116,10 @@ static Key keys[] = {
 
 	{ 0,                       	  0x1008ff02,  spawn,        {.v = increasebrightness } },
 	{ 0,                            0x1008ff03,  spawn,        {.v = decreasebrightness } },
+
+	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
+	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
 };
 
 /* button definitions */
