@@ -11,6 +11,9 @@ all: options dwm scripts
 # move all scripts to PATH for access from within config.h
 .PHONY: scripts
 scripts:
+	mkdir ~/.dwm 2> /dev/null | true;
+	cp ./autostart_blocking.sh ~/.dwm/autostart_blocking.sh;
+	cp ./autostart.sh ~/.dwm/autostart.sh;
 	for file in ./scripts/*; do \
       	echo $$file ; \
 		install -t "/usr/bin/" "$$file" ;\
@@ -53,6 +56,8 @@ install: all
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
+	cp ./autostart_blocking.sh ~/.dwm/autostart_blocking.sh
+	cp ./autostart.sh ~/.dwm/autostart.sh
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
