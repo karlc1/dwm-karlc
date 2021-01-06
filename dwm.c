@@ -199,6 +199,7 @@ static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
+static void resizeclientX(Client *c, int x, int y, int w, int h);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
@@ -1340,7 +1341,19 @@ resize(Client *c, int x, int y, int w, int h, int interact)
 }
 
 void
-resizeclient(Client *c, int x, int y, int w, int h)
+resizeclient(Client *c, int x, int y, int w, int h) {
+
+	int oldX = c->x;
+	int oldY = c->y;
+	int oldW = c->w;
+	int oldH = c->h;
+
+	/*sleep(1);*/
+	resizeclientX(c, oldX, oldY, oldW, oldH);
+}
+
+void
+resizeclientX(Client *c, int x, int y, int w, int h)
 {
 	XWindowChanges wc;
 
