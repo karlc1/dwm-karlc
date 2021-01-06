@@ -1348,8 +1348,30 @@ resizeclient(Client *c, int x, int y, int w, int h) {
 	int oldW = c->w;
 	int oldH = c->h;
 
+
+
 	/*sleep(1);*/
 	resizeclientX(c, oldX, oldY, oldW, oldH);
+
+	resizeclientX(c, oldX+(x/10), oldY+(y/10), oldW+(w/10), oldH+(h/10));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/9), oldY+(y/9), oldW+(w/9), oldH+(h/9));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/8), oldY+(y/8), oldW+(w/8), oldH+(h/8));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/7), oldY+(y/7), oldW+(w/7), oldH+(h/7));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/6), oldY+(y/6), oldW+(w/6), oldH+(h/6));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/5), oldY+(y/5), oldW+(w/5), oldH+(h/5));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/4), oldY+(y/4), oldW+(w/4), oldH+(h/4));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/3), oldY+(y/3), oldW+(w/3), oldH+(h/3));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/2), oldY+(y/2), oldW+(w/2), oldH+(h/2));
+	sleepnano(25000);
+	resizeclientX(c, oldX+(x/1), oldY+(y/1), oldW+(w/1), oldH+(h/1));
 }
 
 void
