@@ -199,9 +199,10 @@ static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
-static void resizeclientX(Client *c, int x, int y, int w, int h);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
+static void resizeX(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
+static void resizeclientX(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
 static void restack(Monitor *m);
 static void run(void);
@@ -1341,41 +1342,88 @@ resize(Client *c, int x, int y, int w, int h, int interact)
 }
 
 void
-resizeclient(Client *c, int x, int y, int w, int h) {
+resizeX(Client *c, int x, int y, int w, int h, int interact)
+{
+	if (applysizehints(c, &x, &y, &w, &h, interact))
+		resizeclientX(c, x, y, w, h);
+}
 
-	int oldX = c->x;
-	int oldY = c->y;
-	int oldW = c->w;
-	int oldH = c->h;
-
-
-
-	/*sleep(1);*/
-	resizeclientX(c, oldX, oldY, oldW, oldH);
-
-	resizeclientX(c, oldX+(x/10), oldY+(y/10), oldW+(w/10), oldH+(h/10));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/9), oldY+(y/9), oldW+(w/9), oldH+(h/9));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/8), oldY+(y/8), oldW+(w/8), oldH+(h/8));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/7), oldY+(y/7), oldW+(w/7), oldH+(h/7));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/6), oldY+(y/6), oldW+(w/6), oldH+(h/6));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/5), oldY+(y/5), oldW+(w/5), oldH+(h/5));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/4), oldY+(y/4), oldW+(w/4), oldH+(h/4));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/3), oldY+(y/3), oldW+(w/3), oldH+(h/3));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/2), oldY+(y/2), oldW+(w/2), oldH+(h/2));
-	sleepnano(25000);
-	resizeclientX(c, oldX+(x/1), oldY+(y/1), oldW+(w/1), oldH+(h/1));
+int
+getPercentage(int originalPos, int desiredPos, int percentage){
+	if ( desiredPos < originalPos) {
+		return originalPos - (desiredPos / 100 / percentage);
+	}else{
+		return originalPos + (desiredPos / 100 / percentage);
+	}
+	return originalPos;
 }
 
 void
-resizeclientX(Client *c, int x, int y, int w, int h)
+movePercentage(Client *c, int ox, int oy, int ow, int oh, int x, int y, int w, int h, int p) {
+
+	int newX = getPercentage(ox, x, p);
+	int newY = getPercentage(oy, y, y);
+	int newW = getPercentage(ow, w, w);
+	int newH = getPercentage(oh, h, h);
+
+	FILE *fp;
+	fp = fopen("/home/karl/.dwm/dwm.log", "a");//opening file.
+	fprintf(fp, "ox: %d, x: %d, p: %d, res: %d \n", ox, x, p, newX);//writing data into file.
+	fclose(fp);//closing file.
+
+	resizeclient(c, newX, newY, newW, newH);
+}
+
+void
+resizeclientX(Client *c, int x, int y, int w, int h) {
+
+	FILE *fp;
+	fp = fopen("/home/karl/.dwm/dwm.log", "a");//opening file.
+	fprintf(fp, "RESIZE CALLED: start: %d, desired: %d \n", c->x, x);//writing data into file.
+	fclose(fp);//closing file.
+
+	struct timespec tim, tim2;
+	tim.tv_sec  = 0;
+	tim.tv_nsec = 200000000L;
+
+	int ox = c->x;
+	int oy = c->y;
+	int ow = c->w;
+	int oh = c->h;
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 10);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 20);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 30);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 40);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 50);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 60);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 70);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 80);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 90);
+	nanosleep(&tim , &tim2);
+
+	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 100);
+	nanosleep(&tim , &tim2);
+}
+
+void
+resizeclient(Client *c, int x, int y, int w, int h)
 {
 	XWindowChanges wc;
 
@@ -2642,15 +2690,15 @@ centeredmaster(Monitor *m)
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (!m->nmaster || i < m->nmaster) {
 			/* nmaster clients are stacked vertically, in the center of the screen */
-			resize(c, mx, my, mw - (2*c->bw), (mh / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
+			resizeX(c, mx, my, mw - (2*c->bw), (mh / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
 			my += HEIGHT(c) + ih;
 		} else {
 			/* stack clients are stacked vertically */
 			if ((i - m->nmaster) % 2 ) {
-				resize(c, lx, ly, lw - (2*c->bw), (lh / lfacts) + ((i - 2*m->nmaster) < 2*lrest ? 1 : 0) - (2*c->bw), 0);
+				resizeX(c, lx, ly, lw - (2*c->bw), (lh / lfacts) + ((i - 2*m->nmaster) < 2*lrest ? 1 : 0) - (2*c->bw), 0);
 				ly += HEIGHT(c) + ih;
 			} else {
-				resize(c, rx, ry, rw - (2*c->bw), (rh / rfacts) + ((i - 2*m->nmaster) < 2*rrest ? 1 : 0) - (2*c->bw), 0);
+				resizeX(c, rx, ry, rw - (2*c->bw), (rh / rfacts) + ((i - 2*m->nmaster) < 2*rrest ? 1 : 0) - (2*c->bw), 0);
 				ry += HEIGHT(c) + ih;
 			}
 		}
