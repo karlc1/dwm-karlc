@@ -1349,77 +1349,44 @@ resizeX(Client *c, int x, int y, int w, int h, int interact)
 }
 
 int
-getPercentage(int originalPos, int desiredPos, int percentage){
-	if ( desiredPos < originalPos) {
-		return originalPos - (desiredPos / 100 / percentage);
-	}else{
-		return originalPos + (desiredPos / 100 / percentage);
-	}
-	return originalPos;
+getPoint(int startPoint, int endPoint, int currStep, int maxStep) {
+	return startPoint + (endPoint - startPoint) * currStep / maxStep;
 }
 
-void
-movePercentage(Client *c, int ox, int oy, int ow, int oh, int x, int y, int w, int h, int p) {
-
-	int newX = getPercentage(ox, x, p);
-	int newY = getPercentage(oy, y, y);
-	int newW = getPercentage(ow, w, w);
-	int newH = getPercentage(oh, h, h);
-
-	FILE *fp;
-	fp = fopen("/home/karl/.dwm/dwm.log", "a");//opening file.
-	fprintf(fp, "ox: %d, x: %d, p: %d, res: %d \n", ox, x, p, newX);//writing data into file.
-	fclose(fp);//closing file.
-
-	resizeclient(c, newX, newY, newW, newH);
-}
 
 void
 resizeclientX(Client *c, int x, int y, int w, int h) {
 
-	FILE *fp;
-	fp = fopen("/home/karl/.dwm/dwm.log", "a");//opening file.
-	fprintf(fp, "RESIZE CALLED: start: %d, desired: %d \n", c->x, x);//writing data into file.
-	fclose(fp);//closing file.
+	/*FILE *fp;*/
+	/*fp = fopen("/home/karl/.dwm/dwm.log", "a");//opening file.*/
+	/*fprintf(fp, "RESIZE CALLED: start: %d, desired: %d \n", c->x, x);//writing data into file.*/
+	/*fclose(fp);//closing file.*/
 
 	struct timespec tim, tim2;
 	tim.tv_sec  = 0;
-	tim.tv_nsec = 200000000L;
+	/*tim.tv_nsec = 100000000L;*/
+	tim.tv_nsec = 10000000L;
 
 	int ox = c->x;
 	int oy = c->y;
 	int ow = c->w;
 	int oh = c->h;
 
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 10);
-	nanosleep(&tim , &tim2);
 
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 20);
-	nanosleep(&tim , &tim2);
+	int max = 10;
 
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 30);
-	nanosleep(&tim , &tim2);
+	for (int i = 0; i < max; i++) {
+		int newX = getPoint(ox, x, i, max);
+		int newY = getPoint(oy, y, i, max);
+		int newW = getPoint(ow, w, i, max);
+		int newH = getPoint(oh, h, i, max);
 
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 40);
-	nanosleep(&tim , &tim2);
+		resizeclient(c, newX, newY, newW, newH);
+		nanosleep(&tim , &tim2);
+	}
 
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 50);
-	nanosleep(&tim , &tim2);
-
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 60);
-	nanosleep(&tim , &tim2);
-
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 70);
-	nanosleep(&tim , &tim2);
-
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 80);
-	nanosleep(&tim , &tim2);
-
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 90);
-	nanosleep(&tim , &tim2);
-
-	movePercentage(c, ox, oy, ow, oh, x, y, w, h, 100);
-	nanosleep(&tim , &tim2);
+	// resize to exapt point after animation is done to avoid rounding issues
+	resizeclient(c, x, y, w, h);
 }
 
 void
