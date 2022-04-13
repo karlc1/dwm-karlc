@@ -70,10 +70,11 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "spawn-alacritty", NULL };
+static const char *termcmd[]  = { "/usr/bin/spawn-kitty"};
 static const char *roficmd[]  = {"rofi", "-show", "drun"};
 static const char *rofiwincmd[]  = {"rofi", "-show", "window"};
 static const char *languagecmd[]  = { "toggle-kb-layout", NULL };
+static const char *lockscreen[]  = { "xscreensaver-command", "-lock"};
 
 
 static const char *increasebrightness[] = {"incbrightness", NULL};
@@ -119,8 +120,9 @@ static Key keys[] = {
 	{ MODKEYALT,                    XK_Tab,    spawn,          {.v = rofiwincmd } },
 	{ MODKEY,                       XK_space,  spawn,          {.v = languagecmd} },
 
-	{ 0,                       	  0x1008ff02,  spawn,        {.v = increasebrightness } },
+	{ 0,                       	  	0x1008ff02,  spawn,        {.v = increasebrightness } },
 	{ 0,                            0x1008ff03,  spawn,        {.v = decreasebrightness } },
+	{ MODKEY|ShiftMask,             XK_l, 	spawn,          {.v = lockscreen } },
 };
 
 /* button definitions */
